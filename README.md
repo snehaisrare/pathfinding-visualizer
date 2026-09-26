@@ -4,11 +4,19 @@ An interactive grid-based visualizer that runs **BFS**, **DFS**, and
 **Dijkstra's algorithm** and animates how each one explores the grid
 before finding a path from a start cell to an end cell.
 
-## Why this project
+## Features
 
-Built to go deeper on graph traversal algorithms after an Amazon SDE1
-coding assessment — the goal was to actually implement and compare
-these algorithms myself rather than just recall their definitions.
+- Interactive grid-based environment
+- Place a start and destination cell
+- Create and remove walls
+- Animated BFS exploration
+- Animated DFS exploration
+- Animated Dijkstra exploration
+- Visual representation of visited cells
+- Final path highlighted separately
+- Runtime, number of visited cells, and path length displayed
+- Algorithms separated from the visualization layer
+
 
 ## How to run it
 
@@ -49,22 +57,30 @@ tested (see below) completely independently of the visualization.
 
 | Algorithm | Data structure | Time complexity | Space | Shortest path guaranteed? |
 |---|---|---|---|---|
-| BFS | Queue (FIFO) | O(rows × cols) | O(rows × cols) | Yes, *if all edges have equal weight* |
-| DFS | Stack (LIFO) | O(rows × cols) | O(rows × cols) | No — finds *a* path, not the shortest |
-| Dijkstra | Min-heap (priority queue) | O(E log V) | O(rows × cols) | Yes, even with *varying* edge weights |
+| BFS | Queue (FIFO) | O(V + E) | O(V) | Yes, if all edges have equal weight |
+| DFS | Stack (LIFO) | O(V + E) | O(V) | No — finds a path, not necessarily the shortest |
+| Dijkstra | Min-heap (priority queue) | O((V + E) log V) | O(V) | Yes, with non-negative edge weights |
 
-On this specific grid, every move costs exactly 1, so BFS and
-Dijkstra will always return a path of the same length — Dijkstra is
-essentially doing extra bookkeeping (the heap) to solve a problem BFS
-already solves optimally for free. The moment edges get *weighted*
-(e.g. some cells cost more to enter — mud, stairs, traffic), BFS stops
-being correct and Dijkstra is the one that still works, because it
-always expands the node with the smallest known total distance, not
-just the node discovered first.
+On this specific grid, every move costs exactly 1, so BFS and Dijkstra
+will return a path of the same minimum length. Dijkstra performs
+additional priority-queue bookkeeping to solve a problem that BFS
+already solves optimally on an unweighted grid.
 
-DFS is included purely as a contrast — it's the wrong tool for
-*shortest*-path problems, but it's cheap, simple, and useful when you
-just need to know "is a path possible at all," or for problems like
-maze generation, cycle detection, or topological sorting where order
-doesn't matter.
+The distinction becomes important when edges have different weights.
+For example, some cells could represent terrain with higher movement
+costs. BFS cannot account for these weights, while Dijkstra can find
+the minimum-cost path by expanding the node with the smallest known
+total distance.
+
+DFS is included as a contrast. It can determine whether a path exists,
+but it does not guarantee the shortest path. Its depth-first exploration
+also makes it useful for problems such as maze generation, cycle
+detection, and topological sorting.
+
+## Technologies
+
+- Python
+- Pygame
+- Data Structures & Algorithms
+- Graph Traversal
 
